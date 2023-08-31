@@ -1,9 +1,13 @@
 package com.example.springboot.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.persistence.criteria.Order;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -21,6 +25,10 @@ public class UserModel implements Serializable {
     private String email;
     private String phone;
     private String password;
+
+    //@JsonIgnore
+    //@OneToMany(mappedBy = "")
+    //private List<Order> orders = new ArrayList<>();
 
 
 }
