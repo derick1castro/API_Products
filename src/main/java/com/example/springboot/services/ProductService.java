@@ -51,5 +51,7 @@ public class ProductService {
     private void updateData(ProductModel productO, ProductModel productModel) {
         productO.setName(productModel.getName());
         productO.setValue(productModel.getValue());
+        productO.setDescription(productModel.getDescription());
+        productO.setImgUrl(productModel.getImgUrl());
     }
 }

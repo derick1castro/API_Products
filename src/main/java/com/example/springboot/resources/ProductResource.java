@@ -11,26 +11,26 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
+@RequestMapping(value = "/products")
 public class ProductResource {
 
     @Autowired
     private ProductService productService;
 
-    @PostMapping("/products")
+    @PostMapping
     public ResponseEntity<ProductModel> saveProduct(@RequestBody @Valid ProductRecordDto productRecordDto) {
         var productModel = new ProductModel();
         BeanUtils.copyProperties(productRecordDto, productModel);
         return ResponseEntity.status(HttpStatus.CREATED).body(productService.insert(productModel));
     }
 
-    @GetMapping("/products")
+    @GetMapping
     public ResponseEntity<List<ProductModel>> getAllProducts(){
         List<ProductModel> productsList = productService.findAll();
         if(!productsList.isEmpty()) {
@@ -42,7 +42,7 @@ public class ProductResource {
         return ResponseEntity.status(HttpStatus.OK).body(productsList);
     }
 
-     @GetMapping("/products/{id}")
+     @GetMapping("/{id}")
     public ResponseEntity<Object> getOneProduct(@PathVariable(value="id") UUID id){
         ProductModel productO = productService.findById(id);
         if(productO == null) {
@@ -52,7 +52,7 @@ public class ProductResource {
         return ResponseEntity.status(HttpStatus.OK).body(productO);
     }
 
-    @DeleteMapping("/products/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteProduct(@PathVariable(value="id") UUID id) {
         ProductModel productO = productService.findById(id);
         if(productO == null) {
@@ -62,7 +62,7 @@ public class ProductResource {
         return ResponseEntity.status(HttpStatus.OK).body("Product deleted successfully.");
     }
 
-    @PutMapping("/products/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Object> updateProduct(@PathVariable(value="id") UUID id,
                                                 @RequestBody @Valid ProductRecordDto productRecordDto) {
         ProductModel productO = productService.findById(id);
