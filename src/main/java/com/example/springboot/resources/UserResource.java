@@ -57,4 +57,16 @@ public class UserResource {
         userService.delete(id);
         return ResponseEntity.status(HttpStatus.OK).body("User deleted successfully.");
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> updateUser(@PathVariable(value = "id") UUID id,
+                                                @RequestBody @Valid UserRecordDto userRecordDto) {
+        UserModel userOptional = userService.findById(id);
+        if (userOptional == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+        UserModel userModel = userOptional;
+        BeanUtils.copyProperties(userRecordDto, userModel);
+        return ResponseEntity.status(HttpStatus.OK).body(userService.update(id, userModel));
+    }
 }

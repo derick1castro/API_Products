@@ -41,4 +41,23 @@ public class UserService {
             throw e;
         }
     }
+
+    //Atualizar um usuário
+    public UserModel update(UUID id, UserModel userModel) {
+        try {
+            UserModel userOptional = userRepository.getReferenceById(id);
+            updateData(userOptional, userModel);
+            return userRepository.save(userOptional);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    private void updateData(UserModel userOptional, UserModel userModel) {
+        userOptional.setName(userModel.getName());
+        userOptional.setEmail(userModel.getEmail());
+        userOptional.setPhone(userModel.getPhone());
+        userOptional.setPassword(userModel.getPassword());
+    }
 }
