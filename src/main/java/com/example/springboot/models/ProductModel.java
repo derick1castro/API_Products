@@ -1,15 +1,22 @@
 package com.example.springboot.models;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
 @Table(name = "TB_PRODUCTS")
-
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProductModel extends RepresentationModel<ProductModel> implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -21,43 +28,8 @@ public class ProductModel extends RepresentationModel<ProductModel> implements S
     private BigDecimal value;
     private String imgUrl;
 
-    public UUID getIdProduct() {
-        return idProduct;
-    }
+    @ManyToMany
+    @JoinTable(name = "TB_PRODUCT_CATEGORY", joinColumns = @JoinColumn(name = "PRODUCT_ID"), inverseJoinColumns = @JoinColumn(name = "CATEGORY_ID"))
+    private Set<CategoryModel> categories = new HashSet<>();
 
-    public void setIdProduct(UUID idProduct) {
-        this.idProduct = idProduct;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public BigDecimal getValue() {
-        return value;
-    }
-
-    public void setValue(BigDecimal value) {
-        this.value = value;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getImgUrl() {
-        return imgUrl;
-    }
-
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
-    }
 }

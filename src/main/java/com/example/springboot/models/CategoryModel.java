@@ -1,11 +1,14 @@
 package com.example.springboot.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -20,4 +23,8 @@ public class CategoryModel implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID idCategory;
     private String name;
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "categories")
+    private Set<ProductModel> products = new HashSet<>();
 }
