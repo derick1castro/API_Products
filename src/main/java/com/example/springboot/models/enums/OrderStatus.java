@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 public enum OrderStatus {
 
-    WAITTING_PAYMENT(1),
+    WAITING_PAYMENT(1),
     PAID(2),
     SHIPPED(3),
     DELIVERY(4),

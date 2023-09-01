@@ -26,9 +26,9 @@ public class UserModel implements Serializable {
     private String phone;
     private String password;
 
-    //@JsonIgnore
-    //@OneToMany(mappedBy = "")
-    //private List<Order> orders = new ArrayList<>();
+    @JsonIgnore
+    @OneToMany(mappedBy = "client")
+    private List<OrderModel> orders = new ArrayList<>();
 
 
 }

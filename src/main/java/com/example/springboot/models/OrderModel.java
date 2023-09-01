@@ -2,8 +2,11 @@ package com.example.springboot.models;
 
 import com.example.springboot.models.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.Instant;
@@ -12,6 +15,8 @@ import java.util.UUID;
 @Entity
 @Table(name = "TB_ORDER")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class OrderModel implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -25,12 +30,14 @@ public class OrderModel implements Serializable {
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
-    public OrderModel() {
+    @PrePersist
+    private void beforePersist() {
+        // Define o valor do campo "momento" como o instante atual antes de persistir no banco de dados.
+        this.moment = Instant.now();
     }
 
-    public OrderModel(UUID idOrder, Instant moment, OrderStatus orderStatus) {
-        this.idOrder = idOrder;
-        this.moment = moment;
-        this.orderStatus = orderStatus;
-    }
+    @ManyToOne
+    @JoinColumn(name = "client_id")
+    private UserModel client;
+
 }
