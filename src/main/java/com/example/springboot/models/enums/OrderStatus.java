@@ -1,10 +1,6 @@
 package com.example.springboot.models.enums;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-
 public enum OrderStatus {
-
     WAITING_PAYMENT(1),
     PAID(2),
     SHIPPED(3),
