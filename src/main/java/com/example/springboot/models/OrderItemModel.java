@@ -1,9 +1,8 @@
 package com.example.springboot.models;
 
 import com.example.springboot.models.pk.OrderItemPk;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,12 +14,16 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderItem implements Serializable {
+public class OrderItemModel implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @EmbeddedId
-    private OrderItemPk id;
+    @JsonIgnore
+    private OrderItemPk id = new OrderItemPk();
 
     private Integer quantity;
-    private Double price;
+    private Double value;
+
+    private ProductModel product;
+
 }

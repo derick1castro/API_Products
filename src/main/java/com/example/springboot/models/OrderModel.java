@@ -2,7 +2,6 @@ package com.example.springboot.models;
 
 import com.example.springboot.models.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,6 +9,8 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -37,7 +38,10 @@ public class OrderModel implements Serializable {
     }
 
     @ManyToOne
-    @JoinColumn(name = "client_id")
+    @JoinColumn(name = "CLIENT_ID")
     private UserModel client;
+
+    @OneToMany(mappedBy = "id.orderModel")
+    private Set<OrderItemModel> items = new HashSet<>();
 
 }
