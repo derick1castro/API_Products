@@ -24,6 +24,8 @@ public class OrderItemModel implements Serializable {
     private Integer quantity;
     private Double value;
 
+    @ManyToOne
+    @JoinColumn(name = "PRODUCT_ID")
     private ProductModel product;
 
 }

@@ -22,8 +22,8 @@ public class OrderItemPk implements Serializable {
     @JoinColumn(name = "ORDER_ID")
     private OrderModel orderModel;
 
-    @ManyToOne
-    @JoinColumn(name = "PRODUCT_ID")
-    private ProductModel productModel;
+    //@ManyToOne
+    //@JoinColumn(name = "PRODUCT_ID")
+    //private ProductModel productModel;
 
 }
