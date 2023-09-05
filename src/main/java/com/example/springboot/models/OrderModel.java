@@ -14,7 +14,7 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
-@Table(name = "TB_ORDER")
+@Table(name = "tb_order")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -31,17 +31,17 @@ public class OrderModel implements Serializable {
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
+    @PreUpdate
     @PrePersist
     private void beforePersist() {
-        // Define o valor do campo "momento" como o instante atual antes de persistir no banco de dados.
         this.moment = Instant.now();
     }
 
     @ManyToOne
-    @JoinColumn(name = "CLIENT_ID")
+    @JoinColumn(name = "client_id")
     private UserModel client;
 
-    @OneToMany(mappedBy = "id.orderModel")
-    private Set<OrderItemModel> items = new HashSet<>();
+    //@OneToMany(mappedBy = "id.orderModel")
+    //private Set<OrderItemModel> items = new HashSet<>();
 
 }

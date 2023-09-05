@@ -1,6 +1,8 @@
 package com.example.springboot.resources;
 
+import com.example.springboot.dtos.CategoryRecordDto;
 import com.example.springboot.dtos.OrderRecordDto;
+import com.example.springboot.models.CategoryModel;
 import com.example.springboot.models.OrderModel;
 import com.example.springboot.models.ProductModel;
 import com.example.springboot.services.OrderService;
@@ -52,5 +54,17 @@ public class OrderResource {
         }
         orderService.delete(id);
         return ResponseEntity.status(HttpStatus.OK).body("Order deleted successfully.");
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> updateOrder(@PathVariable(value = "id") UUID id,
+                                                 @RequestBody @Valid OrderRecordDto orderRecordDto) {
+        OrderModel orderOptional = orderService.findById(id);
+        if (orderOptional == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Category not found");
+        }
+        OrderModel orderModel = orderOptional;
+        BeanUtils.copyProperties(orderRecordDto, orderModel);
+        return ResponseEntity.status(HttpStatus.OK).body(orderService.update(id, orderModel));
     }
 }
