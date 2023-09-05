@@ -8,9 +8,7 @@ import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Table(name = "TB_PRODUCTS")
@@ -30,6 +28,6 @@ public class ProductModel extends RepresentationModel<ProductModel> implements S
 
     @ManyToMany
     @JoinTable(name = "TB_PRODUCT_CATEGORY", joinColumns = @JoinColumn(name = "PRODUCT_ID"), inverseJoinColumns = @JoinColumn(name = "CATEGORY_ID"))
-    private Set<CategoryModel> categories = new HashSet<>();
+    private List<CategoryModel> categories = new ArrayList<>();
 
 }

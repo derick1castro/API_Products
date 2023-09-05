@@ -5,8 +5,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Set;
 
-public record ProductRecordDto(String name, BigDecimal value, String description, String imgUrl, Set<CategoryModel> categories) {
+public record ProductRecordDto(String name, BigDecimal value, String description, String imgUrl, List<CategoryModel> categories) {
 
 }
