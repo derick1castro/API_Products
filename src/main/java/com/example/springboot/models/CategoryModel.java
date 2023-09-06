@@ -7,9 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Table(name = "TB_CATEGORY")
@@ -26,5 +24,5 @@ public class CategoryModel implements Serializable {
 
     @JsonIgnore
     @ManyToMany(mappedBy = "categories")
-    private Set<ProductModel> products = new HashSet<>();
+    private List<ProductModel> products = new ArrayList<>();
 }

@@ -1,10 +1,8 @@
 package com.example.springboot.resources;
 
-import com.example.springboot.dtos.CategoryRecordDto;
+
 import com.example.springboot.dtos.OrderRecordDto;
-import com.example.springboot.models.CategoryModel;
 import com.example.springboot.models.OrderModel;
-import com.example.springboot.models.ProductModel;
 import com.example.springboot.services.OrderService;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
@@ -14,8 +12,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
+
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping(value = "/orders")
@@ -32,10 +33,17 @@ public class OrderResource {
     }
 
     @GetMapping
-    public ResponseEntity<List<OrderModel>> getAllOrders(){
+    public ResponseEntity<List<OrderModel>> getAllOrders() {
         List<OrderModel> ordersList = orderService.findAll();
+        if (!ordersList.isEmpty()) {
+            for (OrderModel order : ordersList) {
+                UUID id = order.getIdOrder();
+                order.add(linkTo(methodOn(OrderResource.class).getOneOrder(id)).withSelfRel());
+            }
+        }
         return ResponseEntity.status(HttpStatus.OK).body(ordersList);
     }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> getOneOrder(@PathVariable(value = "id") UUID id) {
@@ -43,6 +51,8 @@ public class OrderResource {
         if (orderOptional == null){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Order not found");
         }
+        orderOptional.add(linkTo(methodOn(OrderResource.class).getAllOrders()).withRel("Products List"));
+
         return ResponseEntity.status(HttpStatus.OK).body(orderOptional);
     }
 

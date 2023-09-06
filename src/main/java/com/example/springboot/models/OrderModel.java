@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serializable;
 import java.time.Instant;
@@ -16,7 +18,7 @@ import java.util.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderModel implements Serializable {
+public class OrderModel extends RepresentationModel<OrderModel> implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
