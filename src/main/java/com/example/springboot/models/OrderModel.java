@@ -9,9 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Table(name = "tb_order")
@@ -41,7 +39,7 @@ public class OrderModel implements Serializable {
     @JoinColumn(name = "client_id")
     private UserModel client;
 
-    //@OneToMany(mappedBy = "id.orderModel")
-    //private Set<OrderItemModel> items = new HashSet<>();
+    @OneToMany(mappedBy = "id.orderModel")
+    private List<OrderItemModel> items = new ArrayList<>();
 
 }

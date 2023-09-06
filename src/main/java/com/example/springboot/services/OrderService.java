@@ -1,7 +1,9 @@
 package com.example.springboot.services;
 
+import com.example.springboot.models.OrderItemModel;
 import com.example.springboot.models.OrderModel;
 import com.example.springboot.models.ProductModel;
+import com.example.springboot.repositories.OrderItemRepository;
 import com.example.springboot.repositories.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,8 +18,23 @@ public class OrderService {
     @Autowired
     private OrderRepository orderRepository;
 
-    public OrderModel insert(OrderModel orderModel){
-        return orderRepository.save(orderModel);
+    @Autowired
+    private OrderItemRepository orderItemRepository;
+
+    public OrderModel insert(OrderModel orderModel) {
+        // Salvar o pedido principal
+        OrderModel savedOrder = orderRepository.save(orderModel);
+
+        // Associar os itens ao pedido principal
+        List<OrderItemModel> orderItems = orderModel.getItems();
+        for (OrderItemModel orderItem : orderItems) {
+            orderItem.getId().setOrderModel(savedOrder);
+        }
+
+        // Salvar os itens do pedido usando o repositório dos itens
+        orderItemRepository.saveAll(orderItems);
+
+        return savedOrder;
     }
 
     public List<OrderModel> findAll() {
