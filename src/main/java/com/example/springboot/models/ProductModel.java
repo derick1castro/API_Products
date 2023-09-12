@@ -30,4 +30,15 @@ public class ProductModel extends RepresentationModel<ProductModel> implements S
     @JoinTable(name = "TB_PRODUCT_CATEGORY", joinColumns = @JoinColumn(name = "PRODUCT_ID"), inverseJoinColumns = @JoinColumn(name = "CATEGORY_ID"))
     private List<CategoryModel> categories = new ArrayList<>();
 
+    @OneToMany(mappedBy = "product")
+    private List<OrderItemModel> items = new ArrayList<>();
+
+    public List<OrderModel> getOrders(){
+        List<OrderModel> set = new ArrayList<>();
+        for (OrderItemModel x : items) {
+            set.add(x.getOrderModel());
+        }
+        return set;
+    }
+
 }

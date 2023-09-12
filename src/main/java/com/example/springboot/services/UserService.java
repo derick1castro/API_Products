@@ -1,7 +1,6 @@
 package com.example.springboot.services;
 
-import com.example.springboot.models.ProductModel;
-import com.example.springboot.models.UserModel;
+import com.example.springboot.models.User;
 import com.example.springboot.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,24 +15,20 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    //inserir todos os usuários
-    public UserModel insert(UserModel userModel){
-        return userRepository.save(userModel);
+    public User insert(User user){
+        return userRepository.save(user);
     }
 
-    //Listar todos os usuários
-    public List<UserModel> findAll() {
+    public List<User> findAll() {
         return userRepository.findAll();
     }
 
-    //Listar um único usuário
-    public UserModel findById(UUID id) {
-        Optional<UserModel> userOptional = userRepository.findById(id);
+    public User findById(Long id) {
+        Optional<User> userOptional = userRepository.findById(id);
         return userOptional.get();
     }
 
-    //Deletar um usuário
-    public void delete(UUID id){
+    public void delete(Long id){
         try{
             userRepository.deleteById(id);
         }catch (RuntimeException e){
@@ -42,11 +37,10 @@ public class UserService {
         }
     }
 
-    //Atualizar um usuário
-    public UserModel update(UUID id, UserModel userModel) {
+    public User update(Long id, User user) {
         try {
-            UserModel userOptional = userRepository.getReferenceById(id);
-            updateData(userOptional, userModel);
+            User userOptional = userRepository.getReferenceById(id);
+            updateData(userOptional, user);
             return userRepository.save(userOptional);
         } catch (RuntimeException e) {
             e.printStackTrace();
@@ -54,10 +48,10 @@ public class UserService {
         }
     }
 
-    private void updateData(UserModel userOptional, UserModel userModel) {
-        userOptional.setName(userModel.getName());
-        userOptional.setEmail(userModel.getEmail());
-        userOptional.setPhone(userModel.getPhone());
-        userOptional.setPassword(userModel.getPassword());
+    private void updateData(User userOptional, User user) {
+        userOptional.setName(user.getName());
+        userOptional.setEmail(user.getEmail());
+        userOptional.setPhone(user.getPhone());
+        userOptional.setPassword(user.getPassword());
     }
 }

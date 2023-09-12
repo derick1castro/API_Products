@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.hateoas.Link;
 import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serializable;
@@ -39,7 +38,7 @@ public class OrderModel extends RepresentationModel<OrderModel> implements Seria
 
     @ManyToOne
     @JoinColumn(name = "client_id")
-    private UserModel client;
+    private User client;
 
     @OneToMany(mappedBy = "id.orderModel")
     private List<OrderItemModel> items = new ArrayList<>();

@@ -1,9 +1,7 @@
 package com.example.springboot.resources;
 
-import com.example.springboot.dtos.ProductRecordDto;
 import com.example.springboot.dtos.UserRecordDto;
-import com.example.springboot.models.ProductModel;
-import com.example.springboot.models.UserModel;
+import com.example.springboot.models.User;
 import com.example.springboot.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
@@ -16,7 +14,6 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping(value = "/users")
@@ -26,21 +23,21 @@ public class UserResource {
     private UserService userService;
 
     @PostMapping
-    public ResponseEntity<UserModel> saveUser(@RequestBody @Valid UserRecordDto userRecordDto){
-        UserModel userModel = new UserModel();
-        BeanUtils.copyProperties(userRecordDto, userModel);
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.insert(userModel));
+    public ResponseEntity<User> saveUser(@RequestBody @Valid UserRecordDto userRecordDto){
+        User user = new User();
+        BeanUtils.copyProperties(userRecordDto, user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.insert(user));
     }
 
     @GetMapping
-    public ResponseEntity<List<UserModel>> getAllUsers(){
-        List<UserModel> usersList = userService.findAll();
+    public ResponseEntity<List<User>> getAllUsers(){
+        List<User> usersList = userService.findAll();
         return ResponseEntity.status(HttpStatus.OK).body(usersList);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getOneUser(@PathVariable(value="id") UUID id) {
-        UserModel userOptional = userService.findById(id);
+    public ResponseEntity<Object> getOneUser(@PathVariable(value="id") Long id) {
+        User userOptional = userService.findById(id);
         if (userOptional == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
         }
@@ -49,8 +46,8 @@ public class UserResource {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteProduct(@PathVariable(value="id") UUID id) {
-        UserModel userOptional = userService.findById(id);
+    public ResponseEntity<Object> deleteProduct(@PathVariable(value="id") Long id) {
+        User userOptional = userService.findById(id);
         if(userOptional == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
         }
@@ -59,14 +56,14 @@ public class UserResource {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateUser(@PathVariable(value = "id") UUID id,
+    public ResponseEntity<Object> updateUser(@PathVariable(value = "id") Long id,
                                                 @RequestBody @Valid UserRecordDto userRecordDto) {
-        UserModel userOptional = userService.findById(id);
+        User userOptional = userService.findById(id);
         if (userOptional == null){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
-        UserModel userModel = userOptional;
-        BeanUtils.copyProperties(userRecordDto, userModel);
-        return ResponseEntity.status(HttpStatus.OK).body(userService.update(id, userModel));
+        User user = userOptional;
+        BeanUtils.copyProperties(userRecordDto, user);
+        return ResponseEntity.status(HttpStatus.OK).body(userService.update(id, user));
     }
 }

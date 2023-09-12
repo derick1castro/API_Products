@@ -28,4 +28,12 @@ public class OrderItemModel implements Serializable {
     @JoinColumn(name = "PRODUCT_ID")
     private ProductModel product;
 
+    public OrderModel getOrderModel() {
+        return getOrderModel();
+    }
+
+    @JsonIgnore
+    public ProductModel getProduct() {
+        return getProduct();
+    }
 }
