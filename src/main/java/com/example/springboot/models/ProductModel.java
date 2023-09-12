@@ -33,8 +33,8 @@ public class ProductModel extends RepresentationModel<ProductModel> implements S
     @OneToMany(mappedBy = "product")
     private List<OrderItemModel> items = new ArrayList<>();
 
-    public List<OrderModel> getOrders(){
-        List<OrderModel> set = new ArrayList<>();
+    public List<Order> getOrders(){
+        List<Order> set = new ArrayList<>();
         for (OrderItemModel x : items) {
             set.add(x.getOrderModel());
         }

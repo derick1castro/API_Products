@@ -1,7 +1,6 @@
 package com.example.springboot.models.pk;
 
-import com.example.springboot.models.OrderModel;
-import com.example.springboot.models.ProductModel;
+import com.example.springboot.models.Order;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -20,7 +19,7 @@ public class OrderItemPk implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "ORDER_ID")
-    private OrderModel orderModel;
+    private Order order;
 
     //@ManyToOne
     //@JoinColumn(name = "PRODUCT_ID")

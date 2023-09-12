@@ -28,7 +28,7 @@ public class OrderItemModel implements Serializable {
     @JoinColumn(name = "PRODUCT_ID")
     private ProductModel product;
 
-    public OrderModel getOrderModel() {
+    public Order getOrderModel() {
         return getOrderModel();
     }
 

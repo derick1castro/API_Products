@@ -1,8 +1,7 @@
 package com.example.springboot.services;
 
 import com.example.springboot.models.OrderItemModel;
-import com.example.springboot.models.OrderModel;
-import com.example.springboot.models.ProductModel;
+import com.example.springboot.models.Order;
 import com.example.springboot.repositories.OrderItemRepository;
 import com.example.springboot.repositories.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,14 +20,14 @@ public class OrderService {
     @Autowired
     private OrderItemRepository orderItemRepository;
 
-    public OrderModel insert(OrderModel orderModel) {
+    public Order insert(Order order) {
         // Salvar o pedido principal
-        OrderModel savedOrder = orderRepository.save(orderModel);
+        Order savedOrder = orderRepository.save(order);
 
         // Associar os itens ao pedido principal
-        List<OrderItemModel> orderItems = orderModel.getItems();
+        List<OrderItemModel> orderItems = order.getItems();
         for (OrderItemModel orderItem : orderItems) {
-            orderItem.getId().setOrderModel(savedOrder);
+            orderItem.getId().setOrder(savedOrder);
         }
 
         // Salvar os itens do pedido usando o repositório dos itens
@@ -37,16 +36,16 @@ public class OrderService {
         return savedOrder;
     }
 
-    public List<OrderModel> findAll() {
+    public List<Order> findAll() {
         return orderRepository.findAll();
     }
 
-    public OrderModel findById(UUID id){
-        Optional<OrderModel> orderOptional = orderRepository.findById(id);
+    public Order findById(Long id){
+        Optional<Order> orderOptional = orderRepository.findById(id);
         return orderOptional.get();
     }
 
-    public void delete(UUID id) {
+    public void delete(Long id) {
         try {
             orderRepository.deleteById(id);
         } catch (RuntimeException e) {
@@ -55,10 +54,10 @@ public class OrderService {
         }
     }
 
-    public OrderModel update(UUID id, OrderModel orderModel) {
+    public Order update(Long id, Order order) {
         try {
-            OrderModel orderOptional = orderRepository.getReferenceById(id);
-            updateData(orderOptional, orderModel);
+            Order orderOptional = orderRepository.getReferenceById(id);
+            updateData(orderOptional, order);
             return orderRepository.save(orderOptional);
         } catch (RuntimeException e) {
             e.printStackTrace();
@@ -66,9 +65,9 @@ public class OrderService {
         }
     }
 
-    private void updateData(OrderModel orderOptional, OrderModel orderModel) {
-        orderOptional.setOrderStatus(orderModel.getOrderStatus());
-        orderOptional.setClient(orderModel.getClient());
-        orderOptional.setMoment(orderModel.getMoment());
+    private void updateData(Order orderOptional, Order order) {
+        //orderOptional.setOrderStatus(order.getOrderStatus());
+        orderOptional.setClient(order.getClient());
+        orderOptional.setMoment(order.getMoment());
     }
 }

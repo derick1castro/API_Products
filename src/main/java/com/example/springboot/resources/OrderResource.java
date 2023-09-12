@@ -2,7 +2,7 @@ package com.example.springboot.resources;
 
 
 import com.example.springboot.dtos.OrderRecordDto;
-import com.example.springboot.models.OrderModel;
+import com.example.springboot.models.Order;
 import com.example.springboot.services.OrderService;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
@@ -26,18 +26,18 @@ public class OrderResource {
     private OrderService orderService;
 
     @PostMapping
-    public ResponseEntity<OrderModel> saveOrder(@RequestBody @Valid OrderRecordDto orderRecordDto) {
-        OrderModel orderModel = new OrderModel();
-        BeanUtils.copyProperties(orderRecordDto, orderModel);
-        return ResponseEntity.status(HttpStatus.CREATED).body(orderService.insert(orderModel));
+    public ResponseEntity<Order> saveOrder(@RequestBody @Valid OrderRecordDto orderRecordDto) {
+        Order order = new Order();
+        BeanUtils.copyProperties(orderRecordDto, order);
+        return ResponseEntity.status(HttpStatus.CREATED).body(orderService.insert(order));
     }
 
     @GetMapping
-    public ResponseEntity<List<OrderModel>> getAllOrders() {
-        List<OrderModel> ordersList = orderService.findAll();
+    public ResponseEntity<List<Order>> getAllOrders() {
+        List<Order> ordersList = orderService.findAll();
         if (!ordersList.isEmpty()) {
-            for (OrderModel order : ordersList) {
-                UUID id = order.getIdOrder();
+            for (Order order : ordersList) {
+                Long id = order.getId();
                 order.add(linkTo(methodOn(OrderResource.class).getOneOrder(id)).withSelfRel());
             }
         }
@@ -46,8 +46,8 @@ public class OrderResource {
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getOneOrder(@PathVariable(value = "id") UUID id) {
-        OrderModel orderOptional = orderService.findById(id);
+    public ResponseEntity<Object> getOneOrder(@PathVariable(value = "id") Long id) {
+        Order orderOptional = orderService.findById(id);
         if (orderOptional == null){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Order not found");
         }
@@ -57,9 +57,9 @@ public class OrderResource {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteOrder(@PathVariable(value = "id") UUID id) {
-        OrderModel orderModel = orderService.findById(id);
-        if (orderModel == null) {
+    public ResponseEntity<Object> deleteOrder(@PathVariable(value = "id") Long id) {
+        Order order = orderService.findById(id);
+        if (order == null) {
             return  ResponseEntity.status(HttpStatus.NOT_FOUND).body("Order not found");
         }
         orderService.delete(id);
@@ -67,14 +67,14 @@ public class OrderResource {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateOrder(@PathVariable(value = "id") UUID id,
+    public ResponseEntity<Object> updateOrder(@PathVariable(value = "id") Long id,
                                                  @RequestBody @Valid OrderRecordDto orderRecordDto) {
-        OrderModel orderOptional = orderService.findById(id);
+        Order orderOptional = orderService.findById(id);
         if (orderOptional == null){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Category not found");
         }
-        OrderModel orderModel = orderOptional;
-        BeanUtils.copyProperties(orderRecordDto, orderModel);
-        return ResponseEntity.status(HttpStatus.OK).body(orderService.update(id, orderModel));
+        Order order = orderOptional;
+        BeanUtils.copyProperties(orderRecordDto, order);
+        return ResponseEntity.status(HttpStatus.OK).body(orderService.update(id, order));
     }
 }
